@@ -15,8 +15,8 @@ import java.util.logging.Logger;
 
 /**
  * The {@link AppDynamicsDataCollector} will eventually fetch the performance statistics from the
- * AppDynamics REST interface and parse them into a {@link AppDynamicsReport}.<br />
- * <br />
+ * AppDynamics REST interface and parse them into a {@link AppDynamicsReport}.<br>
+ * <br>
  * Perhaps create separate Collectors again when this is more logical to create separate graphs. For
  * now this single collector should get all data.
  */

@@ -21,13 +21,13 @@ import java.util.List;
 import static nl.codecentric.jenkins.appd.util.LocalMessages.PUBLISHER_DISPLAYNAME;
 
 /**
- * Main class for this Jenkins Plugin.<br />
- * Hooks into the build flow as post-build step, then collecting data and generating the report.<br /><br />
- * <p/>
+ * Main class for this Jenkins Plugin.<br>
+ * Hooks into the build flow as post-build step, then collecting data and generating the report.<br><br>
+ * <p>
  * Configuration is set from the Jenkins Build Configuration menu. When a build is triggered, the
  * {@link AppDynamicsResultsPublisher#perform(hudson.model.AbstractBuild, hudson.Launcher, hudson.model.BuildListener)}
  * method is called. This will then trigger the {@link AppDynamicsDataCollector} and parse any results and produces
- * {@link AppDynamicsReport}'s.<br />
+ * {@link AppDynamicsReport}'s.<br>
  * A {@link AppDynamicsBuildAction} is used to store data per-build, so it can be compared later.
  */
 public class AppDynamicsResultsPublisher extends Recorder {

@@ -13,7 +13,7 @@ import org.joda.time.format.DateTimeFormatter;
  *     "startTimeInMillis": 1356877200000,
  *     "value": 6
  *
- *     ==> The 'value' field contains the actual value requested.
+ *     == The 'value' field contains the actual value requested. ==
  */
 public class MetricValues {
   private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.mediumDateTime();

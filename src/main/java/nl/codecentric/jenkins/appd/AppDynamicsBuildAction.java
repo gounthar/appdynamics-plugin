@@ -14,8 +14,8 @@ import java.util.logging.Logger;
 
 /**
  * The build action is defined as {@link Action}, and will fail the build
- * should the response of the system get too low, or when other conditions are not met.<br />
- * <br />
+ * should the response of the system get too low, or when other conditions are not met.<br>
+ * <br>
  * The {@link AppDynamicsBuildAction} relays output and displaying of the build output results
  * to the {@link BuildActionResultsDisplay}.
  */
