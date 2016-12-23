@@ -3,6 +3,7 @@ package nl.codecentric.jenkins.appd;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Action;
+import hudson.model.Run;
 import hudson.util.ChartUtil;
 import hudson.util.DataSetBuilder;
 import hudson.util.Graph;
@@ -44,7 +45,7 @@ public class AppDynamicsProjectAction implements Action {
                                   final String[] allMetricKeys) {
     this.project = project;
     this.mainMetricKey = mainMetricKey;
-    this.allMetricKeys = allMetricKeys;
+    this.allMetricKeys = allMetricKeys.clone();
   }
 
   public String getDisplayName() {
@@ -89,8 +90,8 @@ public class AppDynamicsProjectAction implements Action {
         DataSetBuilder<String, ChartUtil.NumberOnlyBuildLabel> dataSetBuilder =
             new DataSetBuilder<String, ChartUtil.NumberOnlyBuildLabel>();
 
-        for (ChartUtil.NumberOnlyBuildLabel label : averagesFromReports.keySet()) {
-          dataSetBuilder.add(averagesFromReports.get(label), mainMetricKey, label);
+        for (Map.Entry<ChartUtil.NumberOnlyBuildLabel,Double> entry : averagesFromReports.entrySet()) {
+          dataSetBuilder.add(entry.getValue(), mainMetricKey, entry.getKey());
         }
 
         return dataSetBuilder;
@@ -115,8 +116,8 @@ public class AppDynamicsProjectAction implements Action {
         DataSetBuilder<String, ChartUtil.NumberOnlyBuildLabel> dataSetBuilder =
             new DataSetBuilder<String, ChartUtil.NumberOnlyBuildLabel>();
 
-        for (ChartUtil.NumberOnlyBuildLabel label : averagesFromReports.keySet()) {
-          dataSetBuilder.add(averagesFromReports.get(label), metricKey, label);
+        for (Map.Entry<ChartUtil.NumberOnlyBuildLabel,Double> entry : averagesFromReports.entrySet()) {
+          dataSetBuilder.add(entry.getValue(), metricKey, entry.getKey());
         }
 
         return dataSetBuilder;
@@ -189,7 +190,7 @@ public class AppDynamicsProjectAction implements Action {
     for (AppDynamicsReport report : reports) {
       double value = report.getAverageForMetric(metricKey);
       if (value >= 0) {
-        ChartUtil.NumberOnlyBuildLabel label = new ChartUtil.NumberOnlyBuildLabel(report.getBuild());
+        ChartUtil.NumberOnlyBuildLabel label = new ChartUtil.NumberOnlyBuildLabel((Run<?, ?>) report.getBuild());
         averages.put(label, value);
       }
     }

@@ -1,5 +1,6 @@
 package nl.codecentric.jenkins.appd;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.Launcher;
 import hudson.model.*;
@@ -155,7 +156,6 @@ public class AppDynamicsResultsPublisher extends Recorder {
   @Extension
   public static final DescriptorImpl DESCRIPTOR = new DescriptorImpl();
 
-  private RestConnection connection;
   /**
    * Below fields are configured via the <code>config.jelly</code> page.
    */
@@ -206,6 +206,9 @@ public class AppDynamicsResultsPublisher extends Recorder {
   }
 
 
+  @SuppressFBWarnings(
+          value="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE",
+          justification="No idea why FindBugs is expecting NPE, can safely ignore")
   @Override
   public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
       throws InterruptedException, IOException {

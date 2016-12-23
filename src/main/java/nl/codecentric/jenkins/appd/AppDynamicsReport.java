@@ -55,7 +55,7 @@ public class AppDynamicsReport {
     final int numberOfMeasurements = selectedMetric.getMetricValues().size();
     double result = -1;
     if (numberOfMeasurements > 0) {
-      result = calculatedSum / numberOfMeasurements;
+      result = calculatedSum / (double) numberOfMeasurements;
     }
 
     return result;
@@ -105,6 +105,10 @@ public class AppDynamicsReport {
 
   public void setLastBuildReport(AppDynamicsReport lastBuildReport) {
     this.lastBuildReport = lastBuildReport;
+  }
+
+  public AppDynamicsReport getLastBuildReport() {
+    return this.lastBuildReport;
   }
 
 }

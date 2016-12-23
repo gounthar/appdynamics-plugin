@@ -18,7 +18,7 @@ import java.util.List;
 public class RestConnectionTest {
   private final ObjectMapper jsonMapper = new ObjectMapper();
 
-  private final String jsonOutput = "      [{\n" +
+  private static final String jsonOutput = "      [{\n" +
       "        \"frequency\": \"TEN_MIN\",\n" +
       "        \"metricId\": 38357,\n" +
       "        \"metricPath\": \"Overall Application Performance|Average Response Time (ms)\",\n" +

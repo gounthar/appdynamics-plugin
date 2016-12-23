@@ -48,7 +48,7 @@ public class AppDynamicsDataCollector {
   }
 
   public static String[] getAvailableMetricPaths() {
-      return METRIC_PATHS;
+      return METRIC_PATHS.clone();
   }
 
   public static String[] getMergedMetricPaths(String customMetricPath){
