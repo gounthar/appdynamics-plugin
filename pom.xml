@@ -31,11 +31,11 @@
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
     <version>2.11</version><!-- which version of Jenkins is this plugin built against? -->
-    <relativePath/>
+    <relativePath />
   </parent>
 
   <artifactId>appdynamics-dashboard</artifactId>
-  <version>1.0.12-SNAPSHOT</version>
+  <version>1.0.12</version>
   <packaging>hpi</packaging>
 
   <name>AppDynamics Dashboard Plugin for Jenkins</name>
@@ -61,7 +61,7 @@
     <connection>scm:git:ssh://github.com/jenkinsci/appdynamics-plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/jenkinsci/appdynamics-plugin.git</developerConnection>
     <url>https://github.com/jenkinsci/appdynamics-plugin</url>
-    <tag>HEAD</tag>
+    <tag>appdynamics-dashboard-1.0.12</tag>
   </scm>
 
   <properties>
