@@ -70,7 +70,7 @@ public class AppDynamicsBuildAction implements Action, StaplerProxy {
     } catch (IOException e) {
       logger.log(Level.SEVERE, "Error creating new BuildActionResultsDisplay()", e);
     }
-    this.buildActionResultsDisplay = new WeakReference<BuildActionResultsDisplay>(buildDisplay);
+    this.buildActionResultsDisplay = new WeakReference<>(buildDisplay);
     return buildDisplay;
   }
 

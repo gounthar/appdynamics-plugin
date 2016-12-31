@@ -1,17 +1,15 @@
 package nl.codecentric.jenkins.appd;
 
-import hudson.Extension;
-import hudson.ExtensionPoint;
-import hudson.model.*;
-import nl.codecentric.jenkins.appd.rest.types.MetricData;
-import nl.codecentric.jenkins.appd.rest.RestConnection;
-import org.kohsuke.stapler.DataBoundConstructor;
-
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
+
+
+import hudson.model.AbstractBuild;
+import nl.codecentric.jenkins.appd.rest.RestConnection;
+import nl.codecentric.jenkins.appd.rest.types.MetricData;
 
 /**
  * The {@link AppDynamicsDataCollector} will eventually fetch the performance statistics from the
@@ -51,8 +49,8 @@ public class AppDynamicsDataCollector {
       return METRIC_PATHS.clone();
   }
 
-  public static String[] getMergedMetricPaths(String customMetricPath){
-      List<String> result = new ArrayList<String>();
+  public static String[] getMergedMetricPaths(final String customMetricPath){
+      final List<String> result = new ArrayList<String>();
       for (String urlStr : Arrays.asList(METRIC_PATHS)) {
           try {
               if (urlStr.equals(CUSTOM_METRIC_PATH)) {
@@ -74,13 +72,13 @@ public class AppDynamicsDataCollector {
     LOG.fine(String.format("Current time: %d - Build time: %d - Duration: %d", System.currentTimeMillis(),
         buildStartTime, durationInMinutes));
 
-    AppDynamicsReport adReport = new AppDynamicsReport(buildStartTime, durationInMinutes);
+    final AppDynamicsReport adReport = new AppDynamicsReport(buildStartTime, durationInMinutes);
     for (String metricPath : METRIC_PATHS) {
       if (metricPath.equals(CUSTOM_METRIC_PATH))
           metricPath = customMetricPath;
 
       final MetricData metric = restConnection.fetchMetricData(metricPath, durationInMinutes);
-      if (adReport != null && metric != null) {
+      if (metric != null) {
         adReport.addMetrics(metric);
       }
     }

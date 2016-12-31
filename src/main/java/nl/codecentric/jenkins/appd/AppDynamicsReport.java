@@ -41,7 +41,7 @@ public class AppDynamicsReport {
   }
 
   public List<MetricData> getMetricsList() {
-    return new ArrayList<MetricData>(keyedMetricDataMap.values());
+    return new ArrayList<>(keyedMetricDataMap.values());
   }
 
   public double getAverageForMetric(final String metricKey) {

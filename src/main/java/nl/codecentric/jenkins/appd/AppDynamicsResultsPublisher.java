@@ -174,7 +174,8 @@ public class AppDynamicsResultsPublisher extends Recorder {
   public AppDynamicsResultsPublisher(final String appdynamicsRestUri, final String username,
                                      final String password, final String applicationName,
                                      final String thresholdMetric,
-                                     final String customMetricPath, final Boolean lowerIsBetter,
+                                     final String customMetricPath,
+                                     final Boolean lowerIsBetter,
                                      final Integer minimumMeasureTimeInMinutes,
                                      final Integer performanceFailedThreshold,
                                      final Integer performanceUnstableThreshold) {
@@ -244,7 +245,7 @@ public class AppDynamicsResultsPublisher extends Recorder {
       // Verify if the necessary metric is successfully fetched.
       report.getMetricByKey(this.thresholdMetric);
     } catch (Exception e) {
-      logger.println("Unable to fetch (threshold) metric to determine if build is degrading. Aborting");
+      logger.println("Unable to fetch (threshold) metric to determine if build is degrading. Aborting... Exception:\n\t" + e.getMessage());
       if (build.getResult().isBetterOrEqualTo(Result.UNSTABLE))
         build.setResult(Result.FAILURE);
       return true;

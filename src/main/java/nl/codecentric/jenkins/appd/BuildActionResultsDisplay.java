@@ -59,13 +59,14 @@ public class BuildActionResultsDisplay implements ModelObject {
     return currentReport;
   }
 
-  public String getEncodedString(String str) {
-    String encodedStr;
+  public String getEncodedString(final String str) {
+    // Called by Jelly, encoded for displaying
+    final String encodedStr;
     try {
       encodedStr = URLEncoder.encode(str, "UTF8");
     }
     catch (Exception e) {
-      return "";
+      return str; // If fails fall-back to unencoded version, probably sufficient for most cases.
     }
     return encodedStr;
   }
