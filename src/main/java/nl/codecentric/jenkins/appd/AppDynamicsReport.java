@@ -45,7 +45,12 @@ public class AppDynamicsReport {
   }
 
   public double getAverageForMetric(final String metricKey) {
-    final MetricData selectedMetric = getMetricByKey(metricKey);
+    MetricData selectedMetric;
+    try {
+      selectedMetric = getMetricByKey(metricKey);
+    } catch (IllegalArgumentException e) {
+      return -1;
+    }
 
     long calculatedSum = 0;
     for (MetricValues value : selectedMetric.getMetricValues()) {

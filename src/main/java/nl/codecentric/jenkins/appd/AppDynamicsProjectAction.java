@@ -188,7 +188,14 @@ public class AppDynamicsProjectAction implements Action {
       final List<AppDynamicsReport> reports, final String metricKey) {
     Map<ChartUtil.NumberOnlyBuildLabel, Double> averages = new TreeMap<ChartUtil.NumberOnlyBuildLabel, Double>();
     for (AppDynamicsReport report : reports) {
-      double value = report.getAverageForMetric(metricKey);
+      double value = -1;
+      try {
+        value = report.getAverageForMetric(metricKey);
+      } catch (IllegalArgumentException e) {
+        // Report might not have custom metric, silently skip in that case
+        LOGGER.info(String.format("Build %s does not contain metric %s, silently skipping", report.getName(), metricKey));
+      }
+
       if (value >= 0) {
         ChartUtil.NumberOnlyBuildLabel label = new ChartUtil.NumberOnlyBuildLabel((Run<?, ?>) report.getBuild());
         averages.put(label, value);

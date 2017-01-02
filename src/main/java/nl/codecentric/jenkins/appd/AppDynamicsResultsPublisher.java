@@ -39,6 +39,7 @@ public class AppDynamicsResultsPublisher extends Recorder {
   private static final int DEFAULT_THRESHOLD_UNSTABLE = 80;
   private static final int DEFAULT_THRESHOLD_FAILED = 65;
   private static final int DEFAULT_MINIMUM_MEASURE_TIME_MINUTES = 10;
+  private static final String CUSTOM_METRIC_PATH = "Custom metric path";
 
   public static class DescriptorImpl extends BuildStepDescriptor<Publisher> {
 
@@ -80,9 +81,10 @@ public class AppDynamicsResultsPublisher extends Recorder {
     public ListBoxModel doFillThresholdMetricItems() {
       ListBoxModel model = new ListBoxModel();
 
-      for (String value : AppDynamicsDataCollector.getAvailableMetricPaths()) {
+      for (String value : AppDynamicsDataCollector.getStaticMetricPaths()) {
         model.add(value);
       }
+      model.add(CUSTOM_METRIC_PATH);
 
       return model;
     }
@@ -198,7 +200,8 @@ public class AppDynamicsResultsPublisher extends Recorder {
 
   @Override
   public Action getProjectAction(AbstractProject<?, ?> project) {
-    return new AppDynamicsProjectAction(project, thresholdMetric, AppDynamicsDataCollector.getMergedMetricPaths(customMetricPath));
+    final String selectedMetric = CUSTOM_METRIC_PATH.equals(thresholdMetric) ? customMetricPath : thresholdMetric;
+    return new AppDynamicsProjectAction(project, selectedMetric, AppDynamicsDataCollector.getMergedMetricPaths(customMetricPath, true));
   }
 
   public BuildStepMonitor getRequiredMonitorService() {
@@ -226,26 +229,24 @@ public class AppDynamicsResultsPublisher extends Recorder {
 
     logger.println("Connection successful, continue to fetch measurements from AppDynamics Controller ...");
 
-    AppDynamicsDataCollector dataCollector = new AppDynamicsDataCollector(connection, build, customMetricPath,
-        minimumMeasureTimeInMinutes);
+    AppDynamicsDataCollector dataCollector = new AppDynamicsDataCollector(connection, build, logger,
+            customMetricPath, minimumMeasureTimeInMinutes);
     AppDynamicsReport report = dataCollector.createReportFromMeasurements();
 
     AppDynamicsBuildAction buildAction = new AppDynamicsBuildAction(build, report);
     build.addAction(buildAction);
 
-    if (thresholdMetric.equals((AppDynamicsDataCollector.CUSTOM_METRIC_PATH))){
-      thresholdMetric = customMetricPath;
-    }
+    final String selectedMetric = CUSTOM_METRIC_PATH.equals(thresholdMetric) ? customMetricPath : thresholdMetric;
 
     logger.println("Ready building AppDynamics report");
-    logger.println("Verifying for improving or degrading performance, main metric: " + thresholdMetric +
+    logger.println("Verifying for improving or degrading performance, main metric: " + selectedMetric +
         " where lower is better = " + lowerIsBetter);
 
     try {
       // Verify if the necessary metric is successfully fetched.
-      report.getMetricByKey(this.thresholdMetric);
+      report.getMetricByKey(selectedMetric);
     } catch (Exception e) {
-      logger.println("Unable to fetch (threshold) metric to determine if build is degrading. Aborting... Exception:\n\t" + e.getMessage());
+      logger.println("Unable to fetch (threshold) metric to determine if build is degrading. Aborting... Exception:\n\t--> " + e.getMessage());
       if (build.getResult().isBetterOrEqualTo(Result.UNSTABLE))
         build.setResult(Result.FAILURE);
       return true;
@@ -272,10 +273,10 @@ public class AppDynamicsResultsPublisher extends Recorder {
     // mark the build as unstable or failure depending on the outcome.
     List<AppDynamicsReport> previousReportList = getListOfPreviousReports(build, report.getTimestamp());
     logger.println("Number of old reports located for average: " + previousReportList.size());
-    double averageOverTime = calculateAverageBasedOnPreviousReports(previousReportList);
+    double averageOverTime = calculateAverageBasedOnPreviousReports(previousReportList, selectedMetric);
     logger.println("Calculated average from previous reports: " + averageOverTime);
 
-    double currentReportAverage = report.getAverageForMetric(thresholdMetric);
+    double currentReportAverage = report.getAverageForMetric(selectedMetric);
     logger.println("Current report average: " + currentReportAverage);
     double performanceAsPercentageOfAverage;
     if (lowerIsBetter) {
@@ -297,18 +298,18 @@ public class AppDynamicsResultsPublisher extends Recorder {
       }
     }
 
-    logger.println("Metric: " + thresholdMetric
+    logger.println("Metric: " + selectedMetric
         + " reported performance compared to average of " + performanceAsPercentageOfAverage
         + "% . Build status is: " + build.getResult());
 
     return true;
   }
 
-  private double calculateAverageBasedOnPreviousReports(final List<AppDynamicsReport> reports) {
+  private static double calculateAverageBasedOnPreviousReports(final List<AppDynamicsReport> reports, final String metricPath) {
     double calculatedSum = 0;
     int numberOfMeasurements = 0;
     for (AppDynamicsReport report : reports) {
-      double value = report.getAverageForMetric(thresholdMetric);
+      double value = report.getAverageForMetric(metricPath);
       if (value >= 0) {
         calculatedSum += value;
         numberOfMeasurements++;

@@ -110,7 +110,7 @@ public class RestConnection {
           get(ClientResponse.class);
 
       if (response.getStatus() == 200) {
-        String jsonOutput = response.getEntity(String.class);
+        final String jsonOutput = response.getEntity(String.class);
         LOG.fine(String.format("Response from AppDynamics server ==> code: %s | output: %s",
             response.getStatus(), jsonOutput));
 
@@ -119,8 +119,8 @@ public class RestConnection {
         LOG.fine("Successfully fetched metrics for path: " + resultData.getMetricPath());
       }
     } catch (Exception e) {
-      LOG.log(Level.INFO, "Some problem fetching metrics from the AppDynamics REST interface, " +
-          "see stack-trace for more information", e);
+      LOG.log(Level.INFO, String.format("Some problem fetching metrics %s from the AppDynamics REST interface." +
+          "\n\tsee stack-trace for more information", metricPath), e);
     }
 
     return resultData;
