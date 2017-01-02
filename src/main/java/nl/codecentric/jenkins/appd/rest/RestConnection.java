@@ -120,7 +120,7 @@ public class RestConnection {
       }
     } catch (Exception e) {
       LOG.log(Level.INFO, String.format("Some problem fetching metrics %s from the AppDynamics REST interface." +
-          "\n\tsee stack-trace for more information", metricPath), e);
+          "%n\tsee stack-trace for more information", metricPath), e);
     }
 
     return resultData;

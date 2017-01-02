@@ -81,7 +81,7 @@ public class AppDynamicsDataCollector {
       if (metric != null) {
         adReport.addMetrics(metric);
       } else {
-          logger.println(String.format("No result for metric: %s \n\t--> Check if metric exists and correctly formatted.", metricPath));
+          logger.println(String.format("No result for metric: %s %n\t--> Check if metric exists and correctly formatted.", metricPath));
       }
     }
 
