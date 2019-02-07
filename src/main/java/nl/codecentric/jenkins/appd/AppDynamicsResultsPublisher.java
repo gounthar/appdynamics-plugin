@@ -10,6 +10,7 @@ import hudson.tasks.Publisher;
 import hudson.tasks.Recorder;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
+import hudson.util.Secret;
 import nl.codecentric.jenkins.appd.rest.RestConnection;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
@@ -163,7 +164,7 @@ public class AppDynamicsResultsPublisher extends Recorder {
    */
   private String appdynamicsRestUri = "";
   private String username = "";
-  private String password = "";
+  private Secret password;
   private String applicationName = "";
   private String thresholdMetric = DEFAULT_THRESHOLD_METRIC;
   private String customMetricPath = DEFAULT_CUSTOM_METRIC_PATH;
@@ -183,7 +184,7 @@ public class AppDynamicsResultsPublisher extends Recorder {
                                      final Integer performanceUnstableThreshold) {
     setAppdynamicsRestUri(appdynamicsRestUri);
     setUsername(username);
-    setPassword(password);
+    setPassword(Secret.fromString(password));
     setApplicationName(applicationName);
     setThresholdMetric(thresholdMetric);
     setCustomMetricPath(customMetricPath);
@@ -218,7 +219,7 @@ public class AppDynamicsResultsPublisher extends Recorder {
       throws InterruptedException, IOException {
     PrintStream logger = listener.getLogger();
 
-    RestConnection connection = new RestConnection(appdynamicsRestUri, username, password, applicationName);
+    RestConnection connection = new RestConnection(appdynamicsRestUri, username, Secret.toString(password), applicationName);
     logger.println("Verify connection to AppDynamics REST interface ...");
     if (!connection.validateConnection()) {
       logger.println("Connection to AppDynamics REST interface unsuccessful, cannot proceed with this build step");
@@ -359,12 +360,16 @@ public class AppDynamicsResultsPublisher extends Recorder {
     this.username = username;
   }
 
-  public String getPassword() {
+  public Secret getPassword() {
     return password;
   }
 
-  public void setPassword(final String password) {
+  public void setPassword(final Secret password) {
     this.password = password;
+  }
+
+  public void setPassword(final String password) {
+    this.password = Secret.fromString(password);
   }
 
   public String getApplicationName() {
