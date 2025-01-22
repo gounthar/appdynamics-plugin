@@ -14,10 +14,9 @@ import org.jfree.data.category.CategoryDataset;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
 import java.util.logging.Logger;
 
 import static nl.codecentric.jenkins.appd.util.LocalMessages.PROJECTACTION_DISPLAYNAME;

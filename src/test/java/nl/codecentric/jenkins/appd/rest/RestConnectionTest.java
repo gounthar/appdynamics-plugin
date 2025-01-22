@@ -1,6 +1,6 @@
 package nl.codecentric.jenkins.appd.rest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import nl.codecentric.jenkins.appd.rest.types.MetricData;
 
 
