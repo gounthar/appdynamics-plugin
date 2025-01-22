@@ -7,7 +7,6 @@ import nl.codecentric.jenkins.appd.util.LocalMessages;
 import org.kohsuke.stapler.StaplerProxy;
 
 import java.io.IOException;
-import java.io.PrintStream;
 import java.lang.ref.WeakReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
