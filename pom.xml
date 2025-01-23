@@ -30,7 +30,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>4.51</version><!-- which version of Jenkins is this plugin built against? -->
+    <version>4.88</version><!-- which version of Jenkins is this plugin built against? -->
     <relativePath />
   </parent>
 
@@ -66,7 +66,7 @@
 
   <properties>
     <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
-    <jenkins.version>2.346.3</jenkins.version>
+    <jenkins.version>2.462.3</jenkins.version>
 
     <!-- http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
